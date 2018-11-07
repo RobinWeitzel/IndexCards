@@ -27,11 +27,7 @@ export class DataService {
             text: "Answer 3",
             correct: false
           }),
-        ],
-        answered: new Answer({
-          text: "Answer 1",
-          correct: true
-        })
+        ]
       }),
       new Question({
         title: "Question 2",
@@ -49,11 +45,7 @@ export class DataService {
             text: "Answer 3",
             correct: false
           }),
-        ],
-        answered: new Answer({
-          text: "Answer 1",
-          correct: false
-        })
+        ]
       }),
       new Question({
         title: "Question 3",
@@ -87,5 +79,8 @@ export class DataService {
       return this.questionnaires.filter(q => q.title === title)[0];
     else
       return null;
+  }
+
+  setAnswer(questionnaire : Questionnaire, question : Question, answer : Answer) : void {
   }
 }
