@@ -3,6 +3,7 @@ import { Answer } from "./answer";
 export class Question {
     title: string;
     text: string;
+    type: string;
     answers: Answer[];
     answered: Answer;
 

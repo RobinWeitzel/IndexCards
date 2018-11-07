@@ -3,8 +3,8 @@
         <div>
             <h5 class="card-title">{{questionnaire.title}}</h5>
             <h6 class="card-subtitle mb-2 text-success" *ngIf="getQuestionsUnansweredCount(questionnaire) === 0">Completed ({{getQuestionsAnsweredCount(questionnaire)}}/{{questionnaire.questions.length}})</h6>
-            <h6 class="card-subtitle mb-2 text-warning" *ngIf="getQuestionsUnansweredCount(questionnaire) !== 0">In progress ({{getQuestionsAnsweredCount(questionnaire)}}/{{questionnaire.questions.length}})</h6>
-            <h6 class="card-subtitle mb-2 text-muted" *ngIf="getQuestionsAnsweredCount(questionnaire)=== 0">Not started ({{getQuestionsAnsweredCount(questionnaire)}}/{{questionnaire.questions.length}})</h6>
+            <h6 class="card-subtitle mb-2 text-warning" *ngIf="getQuestionsUnansweredCount(questionnaire) > 0 && getQuestionsAnsweredCount(questionnaire) > 0">In progress ({{getQuestionsAnsweredCount(questionnaire)}}/{{questionnaire.questions.length}})</h6>
+            <h6 class="card-subtitle mb-2 text-muted" *ngIf="getQuestionsAnsweredCount(questionnaire) === 0">Not started ({{getQuestionsAnsweredCount(questionnaire)}}/{{questionnaire.questions.length}})</h6>
         </div>
         <i class="fas fa-angle-right"></i>
     </div>

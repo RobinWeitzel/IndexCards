@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Questionnaire } from '../questionnaire';
-import { Question } from '../questions';
+import { Question } from '../question';
 import { Answer } from '../answer';
 import { DataService } from '../data.service';
 import { Router } from '@angular/router';
@@ -19,6 +19,10 @@ export class QuestionnaireListComponent implements OnInit {
 
   ngOnInit() {
     this.questionnaires = this.dataService.getQuestionnaires();
+
+    this.dataService.data.subscribe(questionnaires => {
+      this.questionnaires = questionnaires;
+    });
   }
 
   getQuestionsAnsweredCount(questionnaire: Questionnaire) : number {

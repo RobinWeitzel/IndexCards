@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Questionnaire } from '../questionnaire';
-import { Question } from '../questions';
+import { Question } from '../question';
 import { Answer } from '../answer';
 import { DataService } from '../data.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -12,41 +12,86 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class QuestionnaireDetailComponent implements OnInit {
 
-  questionnaire : Questionnaire;
+  questionnaire: Questionnaire;
+  question: Question;
 
-  question : Question;
-
-  constructor(private route : ActivatedRoute,
+  constructor(private route: ActivatedRoute,
     private router: Router,
-    private dataService : DataService) { }
+    private dataService: DataService) { }
 
   ngOnInit() {
-    const title : string = this.route.snapshot.paramMap.get('title');
+    const title: string = this.route.snapshot.paramMap.get('title');
     this.questionnaire = this.dataService.getQuestionnaire(title);
 
-    if(this.questionnaire.questions.filter(q => q.answered === undefined).length > 0)
+    if (this.questionnaire === null) {
+      const questionnaires = this.dataService.getQuestionnaires().filter(q => q.title === title);
+
+      if (questionnaires.filter.length > 0)
+        this.dataService.setQuestionnaire(questionnaires[0]);
+    }
+
+    if (this.questionnaire && this.questionnaire.questions.filter(q => q !== undefined && q.answered === undefined).length > 0)
       this.question = this.questionnaire.questions.filter(q => q.answered === undefined)[0];
+
+    this.dataService.data.subscribe(questionnaires => {
+      if (questionnaires.filter(q => q.title === title).length > 0) {
+        this.questionnaire = questionnaires.filter(q => q.title === title)[0];
+        if(this.question)
+          this.question = this.questionnaire.questions.filter(q => q.title === this.question.title)[0];
+        else 
+          this.question = this.questionnaire.questions[0];
+      }
+    });
   }
 
-  getQuestionsAnsweredCount() : number {
-    return this.questionnaire.questions.filter(q => q.answered !== undefined).length;
+  getQuestionsCount() : number {
+    return (this.questionnaire ? this.questionnaire.questions.length : 0);
   }
 
-  getProgressBarWidth() : number {
-    return Math.round(100 * this.getQuestionsAnsweredCount() / this.questionnaire.questions.length);
+  getQuestionsAnsweredCount(): number {
+    if(this.questionnaire)
+      return this.questionnaire.questions.filter(q => q.answered !== undefined).length;
+    else
+      return 0;
   }
 
-  chosenAnswer(answer : Answer) : void {
+  getProgressBarWidth(): number {
+    return Math.round(100 * this.getQuestionsAnsweredCount() / this.getQuestionsCount());
+  }
+
+  chosenAnswer(answer: Answer): void {
     this.dataService.setAnswer(this.questionnaire, this.question, answer);
-    this.question.answered = answer;
   }
 
-  back() : void {
+  freeTextCompleted(text : string) : void {
+    this.dataService.setAnswer(this.questionnaire, this.question, new Answer({text: text}));
+  }
+
+  back(): void {
     this.question.answered = undefined;
   }
 
-  next() : void {
-    if(this.questionnaire.questions.filter(q => q.answered === undefined).length > 0)
+  next(): void {
+    if (this.questionnaire.questions.filter(q => q.answered === undefined).length > 0)
       this.question = this.questionnaire.questions.filter(q => q.answered === undefined)[0];
+    else
+      this.question = undefined;
+  }
+
+  no() : void {
+    this.dataService.setAnswer(this.questionnaire, this.question, new Answer({text: this.question.answered.text, correct: false})).then(() => this.next());
+  }
+
+  yes() : void {
+    this.dataService.setAnswer(this.questionnaire, this.question, new Answer({text: this.question.answered.text, correct: true})).then(() => this.next());
+  }
+
+  backToMenu(): void {
+    this.router.navigate(['./']);
+  }
+
+  repeat(): void {
+    this.questionnaire.questions.forEach(q => q.answered = undefined);
+    this.dataService.setQuestionnaire(this.questionnaire);
   }
 }

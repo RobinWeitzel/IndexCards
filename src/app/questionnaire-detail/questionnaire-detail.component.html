@@ -1,17 +1,23 @@
 <div class="progress">
     <div class="progress-bar" role="progressbar" [style.width.%]="getProgressBarWidth()" attr.aria-valuenow="{{getProgressBarWidth()}}"
-        aria-valuemin="0" aria-valuemax="100">{{getQuestionsAnsweredCount()}}/{{questionnaire.questions.length}}</div>
+        aria-valuemin="0" aria-valuemax="100">{{getQuestionsAnsweredCount()}}/{{getQuestionsCount()}}</div>
 </div>
-<div class="card" *ngIf="question.answered === undefined">
+<div class="card" *ngIf="question !== undefined && question.answered === undefined">
     <div class="card-body">
         <h5 class="card-title">{{question.title}}</h5>
         <p class="card-text">{{question.text}}</p>
         <hr />
-        <button type="button" class="btn btn-secondary" *ngFor="let answer of question.answers" (click)="chosenAnswer(answer)">{{question.text}}</button>
+        <div *ngIf="question.type === 'multiple-choice'">
+            <button type="button" class="btn btn-secondary" *ngFor="let answer of question.answers" (click)="chosenAnswer(answer)">{{question.text}}</button>
+        </div>
+        <div *ngIf="question.type === 'free-text'">
+            <textarea class="form-control" rows="6" #freeTextInput></textarea>
+            <button type="button" class="btn btn-secondary" (click)="freeTextCompleted(freeTextInput.value)">Continue</button>
+        </div>
     </div>
 </div>
 
-<div class="card" *ngIf="question.answered !== undefined && question.answered.correct">
+<div class="card" *ngIf="question !== undefined && question.answered !== undefined && question.answered.correct === true">
     <div class="card-body text-center">
         <i class="fas fa-check fa-8x text-success"></i>
         <h5 class="card-title">Congratulations!</h5>
@@ -21,12 +27,35 @@
     </div>
 </div>
 
-<div class="card" *ngIf="question.answered !== undefined && !question.answered.correct">
+<div class="card" *ngIf="question !== undefined && question.answered !== undefined && question.answered.correct === false">
     <div class="card-body text-center">
         <i class="fas fa-times fa-8x text-danger"></i>
         <h5 class="card-title">Sorry!</h5>
         <h5 class="card-subtitle text-muted" style="margin-bottom: 1rem;">That is the wrong answer.</h5>
         <a [routerLink]="" (click)="back()" class="card-link">Go back</a>
         <a [routerLink]="" (click)="next()" class="card-link">Next question</a>
+    </div>
+</div>
+
+<div class="card" *ngIf="question !== undefined && question.answered !== undefined && question.answered.correct === undefined">
+    <div class="card-body text-center">
+        <i class="fas fa-question fa-8x text-muted"></i>
+        <h5 class="card-title">Check yourself!</h5>
+        <h5 class="card-subtitle text-muted" style="margin-bottom: 1rem;">Is the answer you provided correct?</h5>
+        <p class="text-success">Correct answer: {{question.answers[0].text}}</p>
+        <p class="text-muted">Your anwser: {{question.answered.text}}</p>
+        <a [routerLink]="" (click)="no()" class="card-link">No</a>
+        <a [routerLink]="" (click)="yes()" class="card-link">Yes</a>
+    </div>
+</div>
+
+<div class="card" *ngIf="question === undefined">
+    <div class="card-body text-center">
+        <i class="fas fa-smile fa-8x  text-success"></i>
+        <h5 class="card-title">Hurray!</h5>
+        <h5 class="card-subtitle text-muted" style="margin-bottom: 1rem;">You answered all questions (ToDo: show
+            stats).</h5>
+        <a [routerLink]="" (click)="backToMenu()" class="card-link">Back to menu</a>
+        <a [routerLink]="" (click)="repeat()" class="card-link">Repeat</a>
     </div>
 </div>
