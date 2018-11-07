@@ -1,0 +1,46 @@
+:root {
+    --status-bar: #000000; 
+    --app-bar: #212121; 
+    --background: #303030; 
+    --cards: #424242; 
+
+    --primary-text: rgba(255,255,255, 0);
+    --secondary-text: rgba(255,255,255, 0.3);
+    --hint-text: rgba(255,255,255, 0.5);
+
+    --primary-color: #3E50B4;
+    --accent-color: #FF3F80;
+}
+
+/**** Nav ****/
+nav {
+    margin-bottom: 1rem !important;
+}
+
+/***** Card *****/
+
+.card:not(:last-child) {
+    margin-bottom: 1rem !important;
+}
+
+.card:hover, .card:active {
+    background-color: #f0f0f0;
+}
+
+.card-body {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.card-body > div {
+    width: 100%;
+}
+
+.card-body > i {
+    font-size: 50px;
+}
+
+.card-subtitle {
+    margin-bottom: .2rem !important;
+}

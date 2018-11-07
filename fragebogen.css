@@ -1,0 +1,25 @@
+:root {
+    --status-bar: #000000; 
+    --app-bar: #212121; 
+    --background: #303030; 
+    --cards: #424242; 
+
+    --primary-text: rgba(255,255,255, 0);
+    --secondary-text: rgba(255,255,255, 0.3);
+    --hint-text: rgba(255,255,255, 0.5);
+
+    --primary-color: #3E50B4;
+    --accent-color: #FF3F80;
+}
+
+/**** Nav ****/
+nav {
+    margin-bottom: 1rem !important;
+}
+
+/**** Progress ****/
+.progress {
+    margin-bottom: 1rem !important;
+}
+
+/***** Card *****/
