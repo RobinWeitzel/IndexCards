@@ -1,0 +1,29 @@
+.card {
+    cursor: pointer;
+}
+
+.card:not(:last-child) {
+    margin-bottom: 1rem !important;
+}
+
+.card:hover, .card:active {
+    background-color: #f0f0f0;
+}
+
+.card-body {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.card-body > div {
+    width: 100%;
+}
+
+.card-body > i {
+    font-size: 50px;
+}
+
+.card-subtitle {
+    margin-bottom: .2rem !important;
+}

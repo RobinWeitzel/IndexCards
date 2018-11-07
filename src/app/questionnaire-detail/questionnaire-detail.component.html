@@ -1,0 +1,32 @@
+<div class="progress">
+    <div class="progress-bar" role="progressbar" [style.width.%]="getProgressBarWidth()" attr.aria-valuenow="{{getProgressBarWidth()}}"
+        aria-valuemin="0" aria-valuemax="100">{{getQuestionsAnsweredCount()}}/{{questionnaire.questions.length}}</div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">{{question.title}}</h5>
+        <p class="card-text">{{question.text}}</p>
+        <hr />
+        <button type="button" class="btn btn-secondary" *ngFor="let question of questionnaire.questions">{{question.text}}</button>
+    </div>
+</div>
+
+<div class="card" style="display: none;">
+    <div class="card-body text-center">
+        <i class="fas fa-check fa-8x text-success"></i>
+        <h5 class="card-title">Congratulations!</h5>
+        <h5 class="card-subtitle text-muted" style="margin-bottom: 1rem;">That is the correct answer.</h5>
+        <a href="#" class="card-link">Go back</a>
+        <a href="#" class="card-link">Next question</a>
+    </div>
+</div>
+
+<div class="card" style="display: none;">
+    <div class="card-body text-center">
+        <i class="fas fa-times fa-8x text-danger"></i>
+        <h5 class="card-title">Sorry!</h5>
+        <h5 class="card-subtitle text-muted" style="margin-bottom: 1rem;">That is the wrong answer.</h5>
+        <a href="#" class="card-link">Go back</a>
+        <a href="#" class="card-link">Next question</a>
+    </div>
+</div>
